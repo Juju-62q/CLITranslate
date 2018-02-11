@@ -13,6 +13,7 @@ func main() {
 	}else{
 		fmt.Println("option found at " + strconv.Itoa(index))
 	}
+	fmt.Println(getAccessToken())
 }
 
 func arrayContains(arr []string, s string) int{
