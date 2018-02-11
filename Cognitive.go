@@ -7,6 +7,7 @@ import(
 	"io/ioutil"
 	"net/url"
 	"github.com/PuerkitoBio/goquery"
+	"path/filepath"
 )
 
 const(
@@ -57,7 +58,12 @@ func getAccessToken() (string, error){
 func getSubscriptionKey() string{
 	var fp *os.File
 	var err error
-	fp, err = os.Open("./.SubscriptionKey")
+	exe, err := os.Executable()
+	path := filepath.Dir(exe)
+	if err != nil {
+		panic(err)
+	}
+	fp, err = os.Open(path + "/.SubscriptionKey")
 	if err != nil {
 		panic(err)
 	}
