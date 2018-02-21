@@ -3,17 +3,20 @@ package main
 import (
 	"fmt"
 	"os"
+	"bufio"
 )
 
 func main() {
+	// 入力が引数か標準入力かどうかのフラグ
+	var useStandardInput = false
+
 	// オプション関係の設定を読まないようにするための配列
 	isNotNeedRead := make([]bool, len(os.Args), len(os.Args))
 	isNotNeedRead[0] = true
 
 	// 引数がない場合にはエラーを返す
 	if len(os.Args) <= 1 {
-		fmt.Println("not enough argment")
-		return
+		useStandardInput = true
 	}
 
 	// オプションの処理
@@ -25,8 +28,7 @@ func main() {
 	}else{
 		// オプションあるのに引数少ない
 		if len(os.Args) <= 3 {
-			fmt.Println("not enough argment")
-			return
+			useStandardInput = true
 		}else{
 			sourceLang = os.Args[index + 1]
 			isNotNeedRead[index] = true
@@ -34,10 +36,18 @@ func main() {
 		}
 	}
 
-	// 翻訳の実行
-	for i, v := range(isNotNeedRead){
-		if(!v){
-			fmt.Println(translateString(os.Args[i], sourceLang))
+	// stdinを利用
+	if(useStandardInput){
+		stdin := bufio.NewScanner(os.Stdin)
+		for stdin.Scan(){
+			fmt.Println(translateString(stdin.Text(), sourceLang))
+		}
+	// 引数で指定されている
+	}else{
+		for i, v := range(isNotNeedRead){
+			if(!v){
+				fmt.Println(translateString(os.Args[i], sourceLang))
+			}
 		}
 	}
 }
