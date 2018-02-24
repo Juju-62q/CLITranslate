@@ -28,18 +28,26 @@ func translateString(s string, from string, to string) string{
 	text := url.QueryEscape(s)
 	textTranslateApiUrl := textTranslateURL+"from="+from+"&to="+to+"&text="+text+"&appid="+appid
 
-	// getRequestの発行と結果の取得
-	doc, err := goquery.NewDocument(textTranslateApiUrl)
+	res, err := http.Get(textTranslateApiUrl)
 
-	// 500等何らかのエラーが発生した
 	if err != nil{
 		return "can't get appropriate response"
 	}
 
-	// Stringタグのデータをスクレイピングする
-	response := doc.Find("string").Text()
+	if res.StatusCode == 200 {
+		// getRequestの発行と結果の取得
+		doc, err := goquery.NewDocument(textTranslateApiUrl)
 
-	return response
+		// 何らかのエラーが発生した
+		if err != nil {
+			return "can't get appropriate response"
+		}
+
+		// Stringタグのデータをスクレイピングする
+		return doc.Find("string").Text()
+	}
+
+	return "something wrong with your operation"
 }
 
 
