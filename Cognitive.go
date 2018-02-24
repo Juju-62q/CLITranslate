@@ -16,7 +16,7 @@ const(
 )
 
 // 翻訳用の関数
-func translateString(s string, from string) string{
+func translateString(s string, from string, to string) string{
 	token, err := getAccessToken()
 	// Cognitive にアクセスできない場合
 	if err != nil{
@@ -26,7 +26,7 @@ func translateString(s string, from string) string{
 	// urlの成形
 	appid := url.QueryEscape("Bearer "+ string(token))
 	text := url.QueryEscape(s)
-	textTranslateApiUrl := textTranslateURL+"from="+from+"&to=en&text="+text+"&appid="+appid
+	textTranslateApiUrl := textTranslateURL+"from="+from+"&to="+to+"&text="+text+"&appid="+appid
 
 	// getRequestの発行と結果の取得
 	doc, err := goquery.NewDocument(textTranslateApiUrl)

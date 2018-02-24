@@ -57,20 +57,19 @@ func main() {
 		targetLang = os.Args[tOptionPos + 1]
 		isNotNeedRead[tOptionPos] = true
 		isNotNeedRead[tOptionPos + 1] = true
-		fmt.Println(targetLang + " detected")
 	}
 
 	// stdinを利用
 	if(useStandardInput){
 		stdin := bufio.NewScanner(os.Stdin)
 		for stdin.Scan(){
-			fmt.Println(translateString(stdin.Text(), sourceLang))
+			fmt.Println(translateString(stdin.Text(), sourceLang, targetLang))
 		}
 	// 引数で指定されている
 	}else{
 		for i, v := range(isNotNeedRead){
 			if(!v){
-				fmt.Println(translateString(os.Args[i], sourceLang))
+				fmt.Println(translateString(os.Args[i], sourceLang, targetLang))
 			}
 		}
 	}
